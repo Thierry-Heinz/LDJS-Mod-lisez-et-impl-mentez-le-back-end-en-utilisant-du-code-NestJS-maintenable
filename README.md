@@ -117,14 +117,7 @@ Vous devrez créer un back-end NestJS de zéro avec :
    - `GET /api/user/:id` - Obtenir un utilisateur
    - `POST /api/messages` - Envoyer un message
    - Architecture Controller/Service/Repository (Prisma)
-   - Validation des DTOs (class-validator)
-
-3. **Documentation et finalisation** :
-   - Documenter avec Swagger (@nestjs/swagger)
-   - Nettoyer le code
-   - README complet du back-end
-
-## 🔧 Technologies à utiliser
+   - Validation des DTOs (class-validator)SHOIW
 
 ### Front-end (déjà fourni)
 - **React 19** - UI framework
