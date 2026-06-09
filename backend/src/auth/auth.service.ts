@@ -8,53 +8,40 @@ import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
+import { UsersRepository } from 'src/users/users.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
+    private usersRepository: UsersRepository,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
     const { email, password, name } = createUserDto;
 
-    const existingUser = await this.prisma.uSERS.findUnique({
-      where: { email },
-    });
+    const existingUser = await this.usersRepository.findByEmail(email);
     if (existingUser) {
       throw new ConflictException('Un utilisateur avec cet email existe déjà');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.prisma.uSERS.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-      },
-    });
+
+    const user = await this.usersRepository.createUser(
+      email,
+      hashedPassword,
+      name,
+    );
+
     const payload = { sub: user.id, email: user.email };
     const accessToken = await this.jwt.signAsync(payload);
-    user['token'] = accessToken;
+
     return { user, accessToken };
   }
 
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
-    const user = await this.prisma.uSERS.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        password: true,
-      },
-    });
+    const user = await this.usersRepository.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException(
         "Un utilisateur avec cet email n'existe pas",
@@ -77,14 +64,6 @@ export class AuthService {
   }
 
   async validateUser(userId: number) {
-    const user = await this.prisma.uSERS.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-      },
-    });
-    return user;
+    return await this.usersRepository.findById(userId);
   }
 }
