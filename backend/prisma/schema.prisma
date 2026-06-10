@@ -26,7 +26,7 @@ model RENTALS {
   name        String     @db.VarChar(255)
   surface     Decimal    @db.Decimal(10, 2)
   price       Decimal    @db.Decimal(10, 2)
-  picture     String?    @db.VarChar(500)
+  picture     String?    @db.MediumText
   description String     @db.Text
   owner_id    Int
   created_at  DateTime?  @default(now()) @db.Timestamp(0)

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -31,12 +32,12 @@ export class UsersRepository {
     return existingUser;
   }
 
-  async createUser(email: string, password: string, name: string) {
+  async createUser(data: CreateUserDto) {
     const user = await this.prisma.uSERS.create({
       data: {
-        email,
-        password: password,
-        name,
+        email: data.email,
+        password: data.password,
+        name: data.name,
       },
       select: {
         id: true,

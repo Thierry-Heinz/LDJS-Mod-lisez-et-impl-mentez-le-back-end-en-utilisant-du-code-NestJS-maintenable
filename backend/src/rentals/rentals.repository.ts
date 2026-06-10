@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { CreateRentalsDto } from './dto/create-rentals.dto';
+import { UpdateRentalsDto } from './dto/update-rentals.dto';
 
 @Injectable()
 export class RentalsRepository {
@@ -7,5 +9,76 @@ export class RentalsRepository {
 
   async findAll() {
     return await this.prisma.rENTALS.findMany();
+  }
+
+  async findById(id: number) {
+    return await this.prisma.rENTALS.findFirst({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        picture: true,
+        description: true,
+        owner_id: true,
+        created_at: true,
+        updated_at: true,
+        USERS: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
+  async createRental(data: CreateRentalsDto) {
+    const rental = await this.prisma.rENTALS.create({
+      data: {
+        name: data.name,
+        price: data.price,
+        surface: data.surface,
+        picture: data.picture,
+        description: data.description,
+        owner_id: data.owner_id,
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        picture: true,
+        description: true,
+        owner_id: true,
+        created_at: true,
+        updated_at: true,
+        USERS: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return rental;
+  }
+
+  async updateRental(data: UpdateRentalsDto, picture: string, id: number) {
+    const rental = await this.prisma.rENTALS.update({
+      where: { id },
+      data: {
+        name: data.name,
+        price: data.price,
+        surface: data.surface,
+        picture,
+        description: data.description,
+        owner_id: data.owner_id,
+      },
+    });
+
+    return rental;
   }
 }

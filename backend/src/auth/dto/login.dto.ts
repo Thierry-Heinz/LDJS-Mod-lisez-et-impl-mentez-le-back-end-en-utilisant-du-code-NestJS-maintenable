@@ -11,7 +11,7 @@ export class LoginDto {
   })
   @IsEmail(
     {
-      blacklisted_chars: '!?#$%&^({|}~`)\\',
+      blacklisted_chars: '!?#$%&^({|}~`)',
     },
     {
       message: 'Email doit être une adresse email valide',

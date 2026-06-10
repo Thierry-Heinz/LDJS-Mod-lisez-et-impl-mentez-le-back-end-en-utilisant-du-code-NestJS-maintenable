@@ -25,11 +25,11 @@ export class AuthService {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await this.usersRepository.createUser(
+    const user = await this.usersRepository.createUser({
       email,
-      hashedPassword,
+      password: hashedPassword,
       name,
-    );
+    });
 
     const payload = { sub: user.id, email: user.email };
     const accessToken = await this.jwt.signAsync(payload);
