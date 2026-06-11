@@ -8,11 +8,13 @@ export class RentalsService {
   constructor(private readonly rentalsRepository: RentalsRepository) {}
 
   async getAllRentals() {
-    return this.rentalsRepository.findAll();
+    const rentals = await this.rentalsRepository.findAll();
+    return { rentals };
   }
 
   async getRental(id: number) {
-    return await this.rentalsRepository.findById(id);
+    const rental = await this.rentalsRepository.findById(id);
+    return { rental };
   }
 
   async createRental(data: CreateRentalsDto) {

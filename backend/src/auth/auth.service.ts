@@ -32,9 +32,9 @@ export class AuthService {
     });
 
     const payload = { sub: user.id, email: user.email };
-    const accessToken = await this.jwt.signAsync(payload);
+    const token = await this.jwt.signAsync(payload);
 
-    return { user, accessToken };
+    return { user, token };
   }
 
   async login(loginDto: LoginDto) {
@@ -50,14 +50,14 @@ export class AuthService {
       throw new UnauthorizedException('Mot de passe incorrect');
     }
     const payload = { sub: user.id, email: user.email };
-    const accessToken = await this.jwt.signAsync(payload);
+    const token = await this.jwt.signAsync(payload);
 
     return {
       user: {
         email: user.email,
         name: user.name,
       },
-      accessToken,
+      token,
     };
   }
 
