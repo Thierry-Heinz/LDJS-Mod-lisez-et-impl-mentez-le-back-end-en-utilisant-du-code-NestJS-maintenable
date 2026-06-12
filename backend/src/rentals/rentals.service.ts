@@ -7,6 +7,7 @@ import { RentalsRepository } from './rentals.repository';
 import { CreateRentalsDto } from './dto/create-rentals.dto';
 import { UpdateRentalsDto } from './dto/update-rentals.dto';
 import { StorageServiceService } from 'src/storage-service/storage-service.service';
+import adaptRentalObject from 'src/utils/rental.utils';
 
 @Injectable()
 export class RentalsService {
@@ -22,7 +23,13 @@ export class RentalsService {
 
   async getRental(id: number) {
     const rental = await this.rentalsRepository.findById(id);
-    return { rental };
+    if (!rental) {
+      throw new NotFoundException({
+        objectError: "Aucune location avec cette id n'existe",
+      });
+    }
+
+    return adaptRentalObject(rental);
   }
 
   async createRental(data: CreateRentalsDto, picture: Express.Multer.File) {
@@ -40,7 +47,7 @@ export class RentalsService {
         objectError: `Location pas crée ${error}`,
       });
     }
-    return newRental;
+    return adaptRentalObject(newRental);
   }
 
   async updateRental(
@@ -79,6 +86,6 @@ export class RentalsService {
       }
     }
 
-    return updatedRental;
+    return adaptRentalObject(updatedRental);
   }
 }

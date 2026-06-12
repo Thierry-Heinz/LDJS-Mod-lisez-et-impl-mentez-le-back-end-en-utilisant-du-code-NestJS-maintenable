@@ -3,6 +3,11 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateRentalsDto } from './dto/create-rentals.dto';
 import { UpdateRentalsDto } from './dto/update-rentals.dto';
 
+// rentals.repository.ts
+export type RentalWithOwner = Awaited<
+  ReturnType<RentalsRepository['findById']>
+>;
+
 @Injectable()
 export class RentalsRepository {
   constructor(private prisma: PrismaService) {}
@@ -25,9 +30,7 @@ export class RentalsRepository {
         updated_at: true,
         USERS: {
           select: {
-            id: true,
             name: true,
-            email: true,
           },
         },
       },
