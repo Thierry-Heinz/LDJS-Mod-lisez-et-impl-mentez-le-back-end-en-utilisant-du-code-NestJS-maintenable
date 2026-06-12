@@ -54,7 +54,7 @@ export class RentalsController {
       ],
     },
   })
-  async create(
+  async createRental(
     @UploadedFile(
       new ParseFilePipe({
         validators: [

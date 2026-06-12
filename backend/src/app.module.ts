@@ -8,6 +8,7 @@ import { RentalsModule } from './rentals/rentals.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { StorageServiceModule } from './storage-service/storage-service.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { StorageServiceModule } from './storage-service/storage-service.module';
       serveRoot: '/uploads',
     }),
     StorageServiceModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

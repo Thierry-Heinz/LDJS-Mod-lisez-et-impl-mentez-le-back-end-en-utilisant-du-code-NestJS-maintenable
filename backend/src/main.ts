@@ -27,7 +27,9 @@ async function bootstrap() {
   });
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:5173',
+  });
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
