@@ -6,10 +6,18 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { RentalsRepository } from './rentals.repository';
 import { PrismaService } from 'src/prisma.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { StorageServiceModule } from 'src/storage-service/storage-service.module';
+import { StorageServiceService } from 'src/storage-service/storage-service.service';
 
 @Module({
-  imports: [UsersModule, AuthModule],
-  providers: [RentalsService, JwtStrategy, RentalsRepository, PrismaService],
+  imports: [UsersModule, AuthModule, StorageServiceModule],
+  providers: [
+    RentalsService,
+    JwtStrategy,
+    RentalsRepository,
+    PrismaService,
+    StorageServiceService,
+  ],
   controllers: [RentalsController],
 })
 export class RentalsModule {}

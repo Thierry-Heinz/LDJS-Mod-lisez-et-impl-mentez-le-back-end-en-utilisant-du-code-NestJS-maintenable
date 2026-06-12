@@ -1,15 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsPositive, IsString } from 'class-validator';
 
 export class CreateRentalsDto {
   @ApiProperty({
     description: 'rental owner id',
     example: 6,
+    type: Number,
   })
   @IsNotEmpty({
     message: "L'id du propriétaire ne doit pas être vide",
   })
-  @IsNumber()
+  @Type(() => Number)
   @IsPositive()
   owner_id!: number;
 
@@ -30,20 +32,24 @@ export class CreateRentalsDto {
     example: '11',
     type: Number,
   })
-  @IsNumber()
+  @Type(() => Number)
   @IsPositive()
   surface!: number;
 
   @ApiProperty({
-    description: 'rental daily price',
+    description: 'rental picture',
+    type: File,
+  })
+  picture!: File;
+
+  @ApiProperty({
+    description: 'rental monthly price',
     example: '50',
     type: Number,
   })
-  @IsNumber()
+  @Type(() => Number)
   @IsPositive()
   price!: number;
-
-  picture!: string;
 
   @ApiProperty({
     description: 'rental descirption',

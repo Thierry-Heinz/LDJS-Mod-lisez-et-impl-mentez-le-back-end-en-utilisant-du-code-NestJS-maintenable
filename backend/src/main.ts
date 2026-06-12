@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
+import { UpdateRentalsDto } from './rentals/dto/update-rentals.dto';
+import { CreateRentalsDto } from './rentals/dto/create-rentals.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,7 +22,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  const documentFactory = SwaggerModule.createDocument(app, config, {
+    extraModels: [UpdateRentalsDto, CreateRentalsDto],
+  });
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
   app.enableCors();

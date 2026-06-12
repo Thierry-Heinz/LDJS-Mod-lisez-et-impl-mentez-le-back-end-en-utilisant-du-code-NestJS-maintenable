@@ -17,14 +17,16 @@ import { RentalsService } from './rentals.service';
 import { JwtAuthGuard } from 'src/auth/jwt-authguard';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { CreateRentalsDto } from './dto/create-rentals.dto';
 import { UpdateRentalsDto } from './dto/update-rentals.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-
 @ApiBearerAuth()
 @ApiTags('rentals')
 @Controller('rentals')
@@ -36,20 +38,35 @@ export class RentalsController {
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 409, description: 'Conflict' })
   @UseInterceptors(FileInterceptor('picture'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(UpdateRentalsDto) },
+        {
+          properties: {
+            picture: {
+              type: 'File',
+              format: 'jpeg',
+            },
+          },
+        },
+      ],
+    },
+  })
   async create(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 1000 }),
+          new MaxFileSizeValidator({ maxSize: 200000 }),
           new FileTypeValidator({ fileType: 'image/jpeg' }),
         ],
       }),
     )
-    file: Express.Multer.File,
+    picture: Express.Multer.File,
     @Body() createUserDto: CreateRentalsDto,
   ) {
-    console.log(file);
-    return await this.rentalsService.createRental(createUserDto);
+    return await this.rentalsService.createRental(createUserDto, picture);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -75,9 +92,26 @@ export class RentalsController {
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 409, description: 'Conflict' })
   @UseInterceptors(FileInterceptor('picture'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(UpdateRentalsDto) },
+        {
+          properties: {
+            picture: {
+              type: 'File',
+              format: 'jpeg',
+            },
+          },
+        },
+      ],
+    },
+  })
   async update(
     @UploadedFile(
       new ParseFilePipe({
+        fileIsRequired: false,
         validators: [
           new MaxFileSizeValidator({ maxSize: 200000 }),
           new FileTypeValidator({ fileType: 'image/jpeg' }),
@@ -88,11 +122,10 @@ export class RentalsController {
     @Body() updateRentalsDto: UpdateRentalsDto,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    console.log(picture);
     return await this.rentalsService.updateRental(
       updateRentalsDto,
-      picture.buffer,
       id,
+      picture,
     );
   }
 }

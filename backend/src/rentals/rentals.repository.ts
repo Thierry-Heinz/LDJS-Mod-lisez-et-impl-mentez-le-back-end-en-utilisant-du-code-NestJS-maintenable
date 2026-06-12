@@ -34,13 +34,13 @@ export class RentalsRepository {
     });
   }
 
-  async createRental(data: CreateRentalsDto) {
+  async createRental(data: CreateRentalsDto, pictureURL: string) {
     const rental = await this.prisma.rENTALS.create({
       data: {
         name: data.name,
         price: data.price,
         surface: data.surface,
-        picture: data.picture,
+        picture: pictureURL,
         description: data.description,
         owner_id: data.owner_id,
       },
@@ -66,17 +66,14 @@ export class RentalsRepository {
     return rental;
   }
 
-  async updateRental(data: UpdateRentalsDto, picture: string, id: number) {
+  async updateRental(data: UpdateRentalsDto, id: number, pictureURL?: string) {
+    const dataPrisma = {
+      ...data,
+      ...(pictureURL && { picture: pictureURL }),
+    };
     const rental = await this.prisma.rENTALS.update({
       where: { id },
-      data: {
-        name: data.name,
-        price: data.price,
-        surface: data.surface,
-        picture,
-        description: data.description,
-        owner_id: data.owner_id,
-      },
+      data: dataPrisma,
     });
 
     return rental;
