@@ -24,8 +24,10 @@ export class UsersRepository {
     const existingUser = await this.prisma.uSERS.findUnique({
       where: { id },
       select: {
+        id: true,
         email: true,
         name: true,
+        created_at: true,
       },
     });
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumberString, IsPositive } from 'class-validator';
+import { IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CreateMessageDto {
   @ApiProperty({
