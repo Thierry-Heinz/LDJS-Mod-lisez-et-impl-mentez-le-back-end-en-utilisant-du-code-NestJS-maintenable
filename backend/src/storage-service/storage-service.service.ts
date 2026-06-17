@@ -6,13 +6,13 @@ import { rm, writeFile } from 'fs/promises';
 export class StorageServiceService {
   constructor() {}
 
-  async savePictureOnDisk(picture: Express.Multer.File, URL: string) {
-    await writeFile(URL, picture.buffer);
-    return URL;
+  async savePictureOnDisk(picture: Express.Multer.File, path: string) {
+    await writeFile(path, picture.buffer);
+    return path;
   }
 
-  async deletePictureOnDisk(URL: string) {
-    await rm(URL, { force: true });
+  async deletePictureOnDisk(path: string) {
+    await rm(path, { force: true });
   }
 
   generatePictureObject(picture: Express.Multer.File) {
