@@ -30,6 +30,7 @@ export class RentalsRepository {
         updated_at: true,
         USERS: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -38,32 +39,9 @@ export class RentalsRepository {
   }
 
   async createRental(data: CreateRentalsDto, pictureURL: string) {
+    const dataPrisma = { ...data, picture: pictureURL };
     const rental = await this.prisma.rENTALS.create({
-      data: {
-        name: data.name,
-        price: data.price,
-        surface: data.surface,
-        picture: pictureURL,
-        description: data.description,
-        owner_id: data.owner_id,
-      },
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        picture: true,
-        description: true,
-        owner_id: true,
-        created_at: true,
-        updated_at: true,
-        USERS: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      data: dataPrisma,
     });
 
     return rental;

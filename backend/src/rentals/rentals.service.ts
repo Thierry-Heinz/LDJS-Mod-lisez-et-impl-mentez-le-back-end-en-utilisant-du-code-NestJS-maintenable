@@ -47,7 +47,7 @@ export class RentalsService {
         objectError: `Location pas crée ${error}`,
       });
     }
-    return adaptRentalObject(newRental);
+    return newRental;
   }
 
   async updateRental(
@@ -86,6 +86,6 @@ export class RentalsService {
       }
     }
 
-    return adaptRentalObject(updatedRental);
+    return updatedRental;
   }
 }

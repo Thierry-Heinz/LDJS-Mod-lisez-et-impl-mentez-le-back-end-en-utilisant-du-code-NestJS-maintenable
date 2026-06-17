@@ -1,20 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UsersRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findByEmail(email: string) {
-    const existingUser = await this.prisma.uSERS.findUnique({
-      where: { email },
+  async createUser(data: CreateUserDto) {
+    const user = await this.prisma.uSERS.create({
+      data,
       select: {
         id: true,
         email: true,
-        name: true,
-        password: true,
       },
+    });
+
+    return user;
+  }
+
+  async findByEmail(email: string) {
+    const existingUser = await this.prisma.uSERS.findUnique({
+      where: { email },
     });
 
     return existingUser;
@@ -24,7 +30,6 @@ export class UsersRepository {
     const existingUser = await this.prisma.uSERS.findUnique({
       where: { id },
       select: {
-        id: true,
         email: true,
         name: true,
         created_at: true,
@@ -34,20 +39,17 @@ export class UsersRepository {
     return existingUser;
   }
 
-  async createUser(data: CreateUserDto) {
-    const user = await this.prisma.uSERS.create({
-      data: {
-        email: data.email,
-        password: data.password,
-        name: data.name,
-      },
+  async getUser(id: number) {
+    const user = await this.prisma.uSERS.findUnique({
+      where: { id },
       select: {
         id: true,
-        email: true,
         name: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
       },
     });
-
     return user;
   }
 }

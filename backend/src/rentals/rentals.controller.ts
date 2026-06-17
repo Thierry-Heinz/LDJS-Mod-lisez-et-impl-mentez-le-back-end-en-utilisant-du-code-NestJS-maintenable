@@ -33,6 +33,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class RentalsController {
   constructor(private readonly rentalsService: RentalsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiOperation({ summary: 'Register new rental' })
   @ApiResponse({ status: 200, description: 'Success' })
@@ -87,6 +88,7 @@ export class RentalsController {
     return this.rentalsService.getRental(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/:id')
   @ApiOperation({ summary: 'Update new rental' })
   @ApiResponse({ status: 200, description: 'Success' })

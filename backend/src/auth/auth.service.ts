@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
 import { UsersRepository } from 'src/users/users.repository';
 
@@ -34,7 +34,7 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
     const token = await this.jwt.signAsync(payload);
 
-    return { user, token };
+    return token;
   }
 
   async login(loginDto: LoginDto) {
@@ -52,13 +52,7 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
     const token = await this.jwt.signAsync(payload);
 
-    return {
-      user: {
-        email: user.email,
-        name: user.name,
-      },
-      token,
-    };
+    return token;
   }
 
   async validateUser(userId: number) {

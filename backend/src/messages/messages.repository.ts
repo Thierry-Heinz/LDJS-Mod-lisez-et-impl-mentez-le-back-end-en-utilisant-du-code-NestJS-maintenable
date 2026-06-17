@@ -7,12 +7,9 @@ export class MessagesRepository {
   constructor(private prisma: PrismaService) {}
 
   async createMessage(data: CreateMessageDto, userId: number) {
+    const dataPrisma = { ...data, user_id: userId };
     const message = await this.prisma.mESSAGES.create({
-      data: {
-        user_id: userId,
-        rental_id: data.rental_id,
-        message: data.message,
-      },
+      data: dataPrisma,
     });
     return message;
   }
