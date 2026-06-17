@@ -37,13 +37,21 @@ Créer un fichier `.env` à la racine de `backend/` :
 
 ```env
 DATABASE_URL="mysql://user:password@localhost:3306/chatop_db"  # Prisma.config
-JWT_SECRET="votre_secret_jwt"
+JWT_SECRET="votre_secret_jwt"                                  # Génerer avec crypto
 PORT=3001
 DB_USER=user                                                   # Prisma.service
 DB_PASSWORD=password                                           # Prisma.service
 DB_NAME=chatop_db                                              # Prisma.service
 SERVER_URL="http://localhost"                                  # Storage-service.service
 ```
+
+Créer la base de données MySQL :
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS chatop_db;"
+```
+
+> Créer un user MySQL limité à la base de données chatop_db
 
 Générer le client Prisma et appliquer le schéma :
 
@@ -103,7 +111,7 @@ p3-dfsjs-starter/
 │   │   ├── rentals/         # Gestion des locations
 │   │   ├── messages/        # Gestion des messages
 │   │   ├── storage-service/ # Gestion des écritures de fichier
-│   │   ├── common/          # Gestion des exception http et des messages de succès
+│   │   ├── common/          # Gestion des exceptions http et des messages de succès
 │   │   ├── utils/           # Fonction utiles
 │   │   └── main.ts
 │   ├── prisma/

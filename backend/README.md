@@ -37,13 +37,21 @@ Créer un fichier `.env` à la racine de `backend/` :
 
 ```env
 DATABASE_URL="mysql://user:password@localhost:3306/chatop_db"  # Prisma.config
-JWT_SECRET="votre_secret_jwt"
+JWT_SECRET="votre_secret_jwt"                                  # Génerer avec crypto
 PORT=3001
 DB_USER=user                                                   # Prisma.service
 DB_PASSWORD=password                                           # Prisma.service
 DB_NAME=chatop_db                                              # Prisma.service
 SERVER_URL="http://localhost"                                  # Storage-service.service
 ```
+
+Créer la base de données MySQL :
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS chatop_db;"
+```
+
+> Créer un user MySQL limité à la base de données chatop_db
 
 Générer le client Prisma et appliquer le schéma :
 
@@ -60,41 +68,13 @@ npm run start:dev
 
 L'API sera accessible sur [http://localhost:3001](http://localhost:3001), et la documentation Swagger sur [http://localhost:3001/api/swagger](http://localhost:3001/api/swagger) (selon configuration).
 
-#### 3. Installer et lancer le front-end React
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-L'application front-end sera accessible sur [http://localhost:5173](http://localhost:5173) et communique avec l'API sur `http://localhost:3001`.
-
-#### 4. (Optionnel) Utiliser Mockoon pour tester le front-end seul
-
-Si vous souhaitez tester le front-end sans lancer le back-end ni la base de données :
-
-1. Télécharger et installer Mockoon : https://mockoon.com/download/
-2. Ouvrir Mockoon
-3. Importer l'environnement : `File > Open environment`
-4. Sélectionner le fichier : `ressources/mockoon/chatop-api.json`
-5. Démarrer le serveur Mock (clic sur le bouton Play)
-
-L'API mockée sera accessible sur [http://localhost:3001](http://localhost:3001), le même port que le vrai back-end — ne lancez pas les deux en même temps.
+L'application communique avec l'API sur `http://localhost:3001`.
 
 ## 📂 Structure du projet
 
 ```
 p3-dfsjs-starter/
 ├── frontend/                # Application React 19
-│   ├── src/
-│   │   ├── components/     # Composants réutilisables
-│   │   ├── pages/          # Pages de l'application
-│   │   ├── services/       # Services API (axios)
-│   │   ├── types/          # Types TypeScript
-│   │   └── App.tsx
-│   ├── package.json
-│   └── vite.config.ts
 │
 ├── backend/                 # API NestJS
 │   ├── src/
@@ -103,19 +83,13 @@ p3-dfsjs-starter/
 │   │   ├── rentals/         # Gestion des locations
 │   │   ├── messages/        # Gestion des messages
 │   │   ├── storage-service/ # Gestion des écritures de fichier
-│   │   ├── common/          # Gestion des exception http et des messages de succès
+│   │   ├── common/          # Gestion des exceptions http et des messages de succès
 │   │   ├── utils/           # Fonction utiles
 │   │   └── main.ts
 │   ├── prisma/
 │   │   └── schema.prisma
 │   ├── .env
 │   └── package.json
-│
-├── ressources/
-│   ├── mockoon/             # Environnement Mockoon (optionnel)
-│   │   └── chatop-api.json
-│   └── sql/                 # Schéma de base de données de référence
-│       └── schema.sql
 │
 └── README.md
 ```
@@ -149,16 +123,6 @@ p3-dfsjs-starter/
 - Upload d'images via `@UseInterceptors(FileInterceptor())`, servies en fichiers statiques
 
 ## 🛠️ Stack technique
-
-### Front-end
-
-- **React 19** - UI framework
-- **TypeScript 5.7+** - Typage statique
-- **Vite 6** - Build tool
-- **TailwindCSS 3.4** - Styling
-- **TanStack Query** - Data fetching
-- **React Router 7** - Routing
-- **Axios** - HTTP client
 
 ### Back-end
 
@@ -196,19 +160,7 @@ p3-dfsjs-starter/
 - ✅ Validation des entrées utilisateur (DTOs + class-validator)
 - ✅ Gestion des erreurs avec Exception Filters
 
-## 📝 Commandes utiles
-
-### Front-end
-
-```bash
-cd frontend
-npm install          # Installer les dépendances
-npm run dev          # Lancer en développement
-npm run build        # Build production
-npm run lint         # Vérifier le code
-```
-
-### Back-end
+## 📝 Commandes utiles Back-end
 
 ```bash
 cd backend
@@ -231,7 +183,6 @@ npx prisma studio          # Explorer la base de données
 
 - Le front-end communique avec l'API sur `http://localhost:3001`
 - Tous les appels API passent par `/api/*`
-- Mockoon expose les mêmes routes sur le même port : ne pas le lancer en parallèle du vrai back-end
 
 ---
 
