@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
 import { UpdateRentalsDto } from './rentals/dto/update-rentals.dto';
 import { CreateRentalsDto } from './rentals/dto/create-rentals.dto';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,8 @@ async function bootstrap() {
     extraModels: [UpdateRentalsDto, CreateRentalsDto],
   });
   SwaggerModule.setup('api/swagger', app, documentFactory);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.enableCors({
     origin: 'http://localhost:5173',
