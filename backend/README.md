@@ -49,9 +49,16 @@ Créer la base de données MySQL :
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS chatop_db;"
+
 ```
 
-> Créer un user MySQL limité à la base de données chatop_db
+> Puis créer un user MySQL limité à la base de données chatop_db
+
+```bash
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON chatop_db.* TO 'user'@'localhost';
+FLUSH PRIVILEGES;
+```
 
 Générer le client Prisma et appliquer le schéma :
 
