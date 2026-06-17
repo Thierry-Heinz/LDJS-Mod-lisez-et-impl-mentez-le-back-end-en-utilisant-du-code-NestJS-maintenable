@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -27,6 +28,7 @@ export class MessagesController {
   @ApiOperation({ summary: 'Register new messages' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 409, description: 'Conflict' })
+  @ApiBody({ type: CreateMessageDto })
   async createMessage(
     @Request() req: AuthenticatedRequest,
     @Body() createMessageDto: CreateMessageDto,

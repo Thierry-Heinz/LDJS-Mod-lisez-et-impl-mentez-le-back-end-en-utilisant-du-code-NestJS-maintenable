@@ -22,11 +22,11 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
 import { CreateRentalsDto } from './dto/create-rentals.dto';
 import { UpdateRentalsDto } from './dto/update-rentals.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+
 @ApiBearerAuth()
 @ApiTags('rentals')
 @Controller('rentals')
@@ -42,16 +42,22 @@ export class RentalsController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
-      allOf: [
-        { $ref: getSchemaPath(UpdateRentalsDto) },
-        {
-          properties: {
-            picture: {
-              type: 'File',
-              format: 'jpeg',
-            },
-          },
-        },
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        surface: { type: 'number' },
+        price: { type: 'number' },
+        description: { type: 'string' },
+        owner_id: { type: 'number' },
+        picture: { type: 'string', format: 'binary' },
+      },
+      required: [
+        'name',
+        'surface',
+        'price',
+        'description',
+        'owner_id',
+        'picture',
       ],
     },
   })
@@ -97,17 +103,15 @@ export class RentalsController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
-      allOf: [
-        { $ref: getSchemaPath(UpdateRentalsDto) },
-        {
-          properties: {
-            picture: {
-              type: 'File',
-              format: 'jpeg',
-            },
-          },
-        },
-      ],
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        surface: { type: 'number' },
+        price: { type: 'number' },
+        description: { type: 'string' },
+        owner_id: { type: 'number' },
+        picture: { type: 'string', format: 'binary' },
+      },
     },
   })
   async update(

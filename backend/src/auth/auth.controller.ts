@@ -11,6 +11,7 @@ import { JwtAuthGuard } from './jwt-authguard';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -27,6 +28,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register new user' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 409, description: 'Conflict' })
+  @ApiBody({ type: CreateUserDto })
   register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
@@ -35,6 +37,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Login user' })
   @ApiResponse({ status: 200, description: 'Success' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBody({ type: LoginDto })
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }

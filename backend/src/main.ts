@@ -3,8 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
-import { UpdateRentalsDto } from './rentals/dto/update-rentals.dto';
-import { CreateRentalsDto } from './rentals/dto/create-rentals.dto';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
@@ -21,11 +19,10 @@ async function bootstrap() {
     .setTitle('Chatôp Swagger')
     .setDescription('Chatôp API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
-  const documentFactory = SwaggerModule.createDocument(app, config, {
-    extraModels: [UpdateRentalsDto, CreateRentalsDto],
-  });
+  const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
   app.useGlobalFilters(new HttpExceptionFilter());
