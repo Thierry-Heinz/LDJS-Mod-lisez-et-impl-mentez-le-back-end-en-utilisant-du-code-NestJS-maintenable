@@ -15,6 +15,19 @@ export class RentalsService {
     private readonly storageService: StorageServiceService,
   ) {}
 
+  async createRental(data: CreateRentalsDto, picture: Express.Multer.File) {
+    const pictureObject = this.storageService.generatePictureObject(picture);
+    try {
+      await this.storageService.savePictureOnDisk(picture, pictureObject.path);
+      await this.rentalsRepository.createRental(data, pictureObject.URL);
+    } catch {
+      await this.storageService.deletePictureOnDisk(pictureObject.path);
+
+      throw new AppException(AppErrors.RENTAL_NOT_CREATED);
+    }
+    return { message: SuccessMessages.RENTAL_CREATED };
+  }
+
   async getAllRentals() {
     const rentals = await this.rentalsRepository.findAll();
     return { rentals };
@@ -27,19 +40,6 @@ export class RentalsService {
     }
 
     return adaptRentalObject(rental);
-  }
-
-  async createRental(data: CreateRentalsDto, picture: Express.Multer.File) {
-    const pictureObject = this.storageService.generatePictureObject(picture);
-    try {
-      await this.storageService.savePictureOnDisk(picture, pictureObject.path);
-      await this.rentalsRepository.createRental(data, pictureObject.URL);
-    } catch {
-      await this.storageService.deletePictureOnDisk(pictureObject.path);
-
-      throw new AppException(AppErrors.RENTAL_NOT_CREATED);
-    }
-    return { message: SuccessMessages.RENTAL_CREATED };
   }
 
   async updateRental(
