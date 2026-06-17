@@ -578,7 +578,7 @@
               "value": "application/json; charset=utf-8"
             }
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
@@ -588,7 +588,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
@@ -635,7 +636,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
@@ -682,7 +684,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
@@ -729,7 +732,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
@@ -776,7 +780,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
@@ -875,7 +880,8 @@
           "fallbackTo404": false,
           "default": false,
           "crudKey": "id",
-          "callbacks": []
+          "callbacks": [],
+          "body": "{}"
         }
       ],
       "responseMode": null,
