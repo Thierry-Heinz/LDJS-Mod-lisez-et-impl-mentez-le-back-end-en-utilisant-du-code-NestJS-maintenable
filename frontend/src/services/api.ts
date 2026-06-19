@@ -51,11 +51,13 @@ export const authAPI = {
 
   login: async (data: LoginRequest): Promise<AuthResponse> => {
     const response = await api.post('/api/auth/login', data);
+     console.log('login', response.data)
     return response.data;
   },
 
   getCurrentUser: async (): Promise<User> => {
     const response = await api.get('/api/auth/me');
+    console.log('me', response.data)
     return response.data;
   },
 };

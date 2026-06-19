@@ -46,26 +46,38 @@ SERVER_URL="http://localhost"                                  # Storage-service
 ```
 
 Créer la base de données MySQL :
-
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS chatop_db;"
+
 ```
 
-> Puis créer un user MySQL limité à la base de données chatop_db
-```bash
+> Se connecter à MySQL en root, puis créer un user MySQL avec tous les droits sur chatop_db (nécessaire pour l'import du schéma)
+```sql
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON chatop_db.* TO 'user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-
-Générer le client Prisma et appliquer le schéma :
-
+> Importer le schema sql dans la base de données chatop_db, avec ce nouvel utilisateur
 ```bash
-npx prisma generate
-npx prisma migrate deploy
+mysql -u user -p chatop_db < ressources/sql/schema.sql
 ```
 
+> Limiter les droits de ce user pour le développement (CREATE/ALTER/DROP gardés pour les futures migrations Prisma)
+```sql
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'localhost';
+FLUSH PRIVILEGES;
+```
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, REFERENCES, DROP ON chatop_db.* TO 'user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Générer le client Prisma et appliquer importer le schéma depuis la base déjà crée:
+```bash
+npx prisma db pull
+npx prisma generate
+```
 Lancer le serveur :
 
 ```bash
